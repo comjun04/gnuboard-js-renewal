@@ -3,9 +3,10 @@ const router = express.Router()
 
 const index = require('../script/index')
 
-router.all('/', (req, res) => {
+router.all('/', async (req, res) => {
   req.userData = {}
-  let data = index(req, res)
+  let data = await index(req, res)
+  //console.log(data) // debug
   res.render('index', {data, sharedData: req.userData})
 })
 

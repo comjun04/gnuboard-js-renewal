@@ -4,7 +4,7 @@ const slash = require('express-slash')
 const path = require('path').resolve() //placeholder
 
 const logger = require('./tools/logger')
-const config = require('./config')
+const config = require('./config')()
 const DB = require('./database')
 
 // Load routers

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <%
+    if (sharedData.isMobile) {
+  %>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=0,maximum-scale=10,user-scalable=yes">
+  <meta name="HandheldFriendly" content="true">
+  <meta name="format-detection" content="telephone=no">
+  <%
+    } else {
+  %>
+  <meta http-equiv="imagetoolbar" content="no">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <%
+    if(data.config.cf_add_meta) {
+  %>
+  <%= data.config.cf_add_meta %>
+  <% } %>
+  <title><%= data.g5_head_title %></title>
+  <%
+    if (sharedData.isAdmin) {
+      if(sharedData.themePreview) {
+  %>
+  <link rel="stylesheet" href="<%= sharedData.adminURL + '/css/admin.css?ver=' + sharedData.cssVer %>">
+  <%
+      }
+    } else {
+  %>
+  <link rel="stylesheet" href="<%= sharedData.cssURL + '/' + (sharedData.isMobile ? 'mobile' : 'default') + '.css?ver=' + sharedData.cssVer %>">
+  <%
+    }
+  }
+  %>

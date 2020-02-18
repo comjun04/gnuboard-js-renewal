@@ -1,6 +1,6 @@
 const headSub = require('./head.sub')
 
-module.exports = function headRun(req, res) {
+module.exports = function headRun(req, res, data = {}) {
   let returnData = {data: {}}
 
   //run_event('pre_head');
@@ -10,7 +10,7 @@ module.exports = function headRun(req, res) {
   // 모바일인지 확인
 
   // 필요한 라이브러리 로드
-  returnData.data.headSub = headSub(req, res)
+  returnData.data.headSub = headSub(req, res, {config: data.config})
 
   returnData._status = 'OK'
   return returnData
