@@ -1,0 +1,4 @@
+data
+*.swp
+node_modules
+.vscode
