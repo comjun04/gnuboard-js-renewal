@@ -23,13 +23,28 @@
     if (sharedData.isAdmin) {
       if(sharedData.themePreview) {
   %>
-  <link rel="stylesheet" href="<%= sharedData.adminURL + '/css/admin.css?ver=' + sharedData.cssVer %>">
+  <link rel="stylesheet" href="/src/css/admin/admin.css?ver=<%= sharedData.cssVer %>">
   <%
       }
     } else {
   %>
-  <link rel="stylesheet" href="<%= sharedData.cssURL + '/' + (sharedData.isMobile ? 'mobile' : 'default') + '.css?ver=' + sharedData.cssVer %>">
+  <link rel="stylesheet" href="/src/css/<%= (sharedData.isMobile ? 'mobile' : 'default') %>.css?ver=<%= sharedData.cssVer %>">
   <%
     }
   }
   %>
+  <!--[if lte IE 8]>
+  <script src="/src/js/html5.js"></script>
+  <![endif]-->
+  <script>
+    // 자바스크립트에서 사용하는 전역변수 선언
+    var g5_url       = "<%= sharedData.url %>";
+    var g5_bbs_url   = "<%= sharedData.bbsURL %>";
+    var g5_is_member = "<?php echo isset($is_member)?$is_member:''; ?>";
+    var g5_is_admin  = "<?php echo isset($is_admin)?$is_admin:''; ?>";
+    var g5_is_mobile = "<%= sharedData.isMobile %>";
+    var g5_bo_table  = "<?php echo isset($bo_table)?$bo_table:''; ?>";
+    var g5_sca       = "<?php echo isset($sca)?$sca:''; ?>";
+    var g5_editor    = "<?php echo ($config['cf_editor'] && $board['bo_use_dhtml_editor'])?$config['cf_editor']:''; ?>";
+    var g5_cookie_domain = "<%= sharedData.cookieDomain %>";
+  </script>

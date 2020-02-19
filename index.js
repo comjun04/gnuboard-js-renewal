@@ -2,6 +2,8 @@
 const express = require('express')
 const slash = require('express-slash')
 const path = require('path').resolve() //placeholder
+const session = require('express-session')
+const SessionFileStore = require('session-file-store')(session)
 
 const logger = require('./tools/logger')
 const config = require('./config')()
@@ -20,8 +22,26 @@ app.set('view engine', 'ejs')
 app.set('views', './page')
 app.enable('strict routing')
 
+// Static files (client-side js, css...)
+app.use('/src', express.static('./src'))
+
+// Sessions
+app.use(session({
+  secret: 'MUST MOVE TO SETTING FILE / keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: false
+  },
+  store: new SessionFileStore({
+    ttl: 60 * 180,
+    reapInterval: 10800,
+    path: './data/session'
+  })
+}))
+
 // Router setting
-app.use(indexRouter)
+app.use('/', indexRouter)
 app.use(slash()) // Must place after root page('/') and before any other pages
 
 app.listen(config.PORT, () => {

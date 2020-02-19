@@ -13,6 +13,9 @@ module.exports = async function commonRun(req) {
   // Line 56
   let config = require('../config')(req, {g5_path: _g5_path})
 
+  // Line 126
+  returnData.member = {}
+
   // Line 143
   let dbconfig_file = 'data/dbconfig.js'
   if(fs.existsSync(path + '/' + dbconfig_file)) {
@@ -21,6 +24,21 @@ module.exports = async function commonRun(req) {
 
   // Line 224
   returnData.config = await getDataLib.getConfig(req)
+
+  // Line 468
+  // 회원, 비회원 구분
+  let is_member = false
+  let is_guest = false
+  let is_admin = '';
+  if (returnData.member.mb_id) {
+    is_member = true
+    is_admin = is_admin(returnData.member.mb_id)
+    returnData.member.mb_dir = substr(returnData.member.mb_id,0,2)
+} else {
+    is_guest = true
+    returnData.member.mb_id = ''
+    returnData.member.mb_level = 1 // 비회원의 경우 회원레벨을 가장 낮게 설정
+}
 
   // Line 607
   req.userData.isMobile = false
