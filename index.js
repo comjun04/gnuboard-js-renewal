@@ -31,7 +31,8 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   cookie: {
-    httpOnly: false
+    httpOnly: false,
+    domain: config.cookieDomain
   },
   store: new SessionFileStore({
     ttl: 60 * 180,
