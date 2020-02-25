@@ -4,6 +4,7 @@ const slash = require('express-slash')
 const path = require('path').resolve() //placeholder
 const session = require('express-session')
 const SessionFileStore = require('session-file-store')(session)
+const cookieParser = require('cookie-parser')
 
 const logger = require('./tools/logger')
 const config = require('./config')()
@@ -21,6 +22,9 @@ let app = express()
 app.set('view engine', 'ejs')
 app.set('views', './page')
 app.enable('strict routing')
+
+// Cookie
+app.use(cookieParser())
 
 // Static files (client-side js, css...)
 app.use('/src', express.static('./src'))

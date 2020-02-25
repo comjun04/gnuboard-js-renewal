@@ -6,13 +6,16 @@ module.exports = async function indexRun(req, res, data = {}) {
 
   returnData._data.common = await common(req, res)
 
+  // Line 4
+  req.userData._index = true
+
   // Line 6
   // TODO 테마 확인
 
   // Line 11
   // TODO 모바일인지 확인
   
-  returnData._data.head = head(req, res, {
+  returnData._data.head = await head(req, res, {
     common: returnData._data.common
   })
 

@@ -8,12 +8,12 @@ exports.create = (host, user, pass, db) => {
   return knex({
     client: 'mysql',
     connection: {
-      host: host || dbconfig.G5_MYSQL_HOST,
-      user: user || dbconfig.G5_MYSQL_USER,
-      password: pass || dbconfig.G5_MYSQL_PASSWORD,
-      database: db || dbconfig.G5_MYSQL_DB
+      host: host || dbconfig.host,
+      user: user || dbconfig.user,
+      password: pass || dbconfig.password,
+      database: db || dbconfig.db
     },
-    debug: false,
+    debug: true,
     asyncStackTraces: true // debug
   })
 }

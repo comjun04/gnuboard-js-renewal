@@ -1,6 +1,7 @@
 const headSub = require('./head.sub')
+const newWinInc = require('./bbs/newwin.inc')
 
-module.exports = function headRun(req, res, data = {}) {
+module.exports = async function headRun(req, res, data = {}) {
   let returnData = {_data: {}}
 
   // Line 4
@@ -17,6 +18,14 @@ module.exports = function headRun(req, res, data = {}) {
   returnData._data.headSub = headSub(req, res, {
     common: data.common
   })
+
+  // Line 27
+  returnData.title = data.common.g5.title
+
+  // Line 31
+  if(req.userData._index) { // index에서만 실행
+    returnData._data.newWinInc = await newWinInc(req, res, {common: data.common})
+  }
 
   returnData._status = 'OK'
   return returnData

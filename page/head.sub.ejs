@@ -14,6 +14,7 @@
   <meta http-equiv="imagetoolbar" content="no">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <%
+    }
     if(data.config.cf_add_meta) {
   %>
   <%= data.config.cf_add_meta %>
@@ -31,8 +32,8 @@
   <link rel="stylesheet" href="/src/css/<%= (sharedData.isMobile ? 'mobile' : 'default') %>.css?ver=<%= sharedData.cssVer %>">
   <%
     }
-  }
   %>
+  <%- data.css %>
   <!--[if lte IE 8]>
   <script src="/src/js/html5.js"></script>
   <![endif]-->
@@ -58,6 +59,7 @@
   %>
   <%= data.config.cf_add_script %>
   <% } %>
+  <%- data.js %>
   </head>
   <body<%= data.bodyScript ? data.bodyScript : '' %>>
     <%

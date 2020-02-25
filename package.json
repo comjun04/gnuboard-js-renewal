@@ -1,12 +1,15 @@
 {
   "dependencies": {
     "chalk": "^3.0.0",
+    "cookie-parser": "^1.4.4",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "express-slash": "^2.0.1",
     "knex": "^0.20.10",
     "mysql": "^2.18.1",
+    "numeral": "^2.0.6",
+    "sanitize-html": "^1.21.1",
     "session-file-store": "^1.4.0"
   }
 }

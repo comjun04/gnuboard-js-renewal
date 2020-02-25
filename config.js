@@ -1,3 +1,5 @@
+const numeral = require('numeral')
+
 module.exports = function configRun(req, data = {}) {
   let returnData = {}
 
@@ -44,6 +46,23 @@ module.exports = function configRun(req, data = {}) {
     req.userData.cssURL = req.userData.url + '/' + req.userData.cssDir
     // Line 97
     req.userData.jsURL = req.userData.url + '/' + req.userData.jsDir
+
+    // Line 142
+    // 시간 상수
+    // 서버의 시간과 실제 사용하는 시간이 틀린 경우 수정하세요.
+    // 하루는 86400 초입니다. 1시간은 3600초
+    // 6시간이 빠른 경우 time() + (3600 * 6);
+    // 6시간이 느린 경우 time() - (3600 * 6);
+
+    const datenow = new Date()
+
+    req.userData.serverTime = Math.floor(Date.now() / 1000) // TODO
+    req.userData.timeYMDHIS = datenow.getFullYear()
+      + '-' + numeral(datenow.getMonth() + 1).format('00')
+      + '-' + numeral(datenow.getDate()).format('00')
+      + ' ' + numeral(datenow.getHours()).format('00')
+      + ':' + numeral(datenow.getMinutes()).format('00')
+      + ':' + numeral(datenow.getSeconds()).format('00')
   }
 
   return returnData

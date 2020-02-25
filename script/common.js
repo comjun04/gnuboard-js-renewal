@@ -5,7 +5,7 @@ const getDataLib = require('./lib/get_data.lib')
 const versionExtend = require('./extend/version.extend')
 const commonLib = require('./lib/common.lib')
 
-module.exports = async function commonRun(req) {
+module.exports = async function commonRun(req, res) {
   let returnData = {data: {}}
   
   // Line 54
@@ -26,11 +26,11 @@ module.exports = async function commonRun(req) {
   // Line 143
   let dbconfig_file = 'data/dbconfig.js'
   if(fs.existsSync(path + '/' + dbconfig_file)) {
-    req.userData.dbconfig = require(path + '/' + dbconfig_file)()
+    require(path + '/' + dbconfig_file)(req, res, {common: {g5: returnData.g5}})
   }
 
   // Line 224
-  returnData.config = await getDataLib.getConfig(req)
+  returnData.config = await getDataLib.getConfig(req, res, {common: {g5: returnData.g5}})
 
   // Line 273
   // QUERY_STRING
