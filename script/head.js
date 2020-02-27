@@ -1,5 +1,6 @@
 const headSub = require('./head.sub')
 const newWinInc = require('./bbs/newwin.inc')
+const connectLib = require('./lib/connect.lib')
 
 module.exports = async function headRun(req, res, data = {}) {
   let returnData = {_data: {}}
@@ -26,6 +27,9 @@ module.exports = async function headRun(req, res, data = {}) {
   if(req.userData._index) { // index에서만 실행
     returnData._data.newWinInc = await newWinInc(req, res, {common: data.common})
   }
+
+  // Line 41
+  returnData.connect = await connectLib.connect(data.common.g5, data.common.config)
 
   returnData._status = 'OK'
   return returnData

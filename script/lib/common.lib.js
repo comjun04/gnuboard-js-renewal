@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path').resolve()
 const sanitizeHtml = require('sanitize-html')
+const numeral = require('numeral')
 
 const extendVideo = require('../plugin/htmlpurifier/extend.video')
 
@@ -49,6 +50,107 @@ exports.HTMLProcess = class HTMLProcess {
     if(isMerge) {
       this.js.push([order, javascript])
     }
+  }
+
+  // Line 2512
+  //TODO Not finished
+  async run(g5, member, config, ip, datetime, serverTime, cssVer, jsVer, headSubData) {
+    let tmp_row = await global.knex.select('count(*)')
+      .as('cnt')
+      .from(g5.login_table)
+      .where('lo_ip', ip)
+
+    if(tmp_row.cnt) {
+      await global.knex(g5.login_table).update({
+        mb_id: member.mb_id,
+        lo_datetime: datetime,
+        lo_location: g5.lo_location,
+        lo_url: g5.lo_url
+      }).where(lo_ip, ip)
+    } else {
+      await global.knex.insert({
+        lo_ip: ip,
+        mb_id: member.mb_id,
+        lo_datetime: datetime,
+        lo_location: g5.lo_location,
+        lo_url: g5.lo_url
+      }).into(g5.login_table)
+    }
+
+    // 시간이 지난 접속은 삭제한다
+    let tmpDate = new Date(serverTime - (60 * config.cf_login_minutes))
+    await global.knex.del()
+      .from(g5.login_table)
+      .where('lo_datetime', '<', tmpDate.getFullYear()
+      + '-' + numeral(tmpDate.getMonth() + 1).format('00')
+      + '-' + numeral(tmpDate.getDate()).format('00')
+      + ' ' + numeral(tmpDate.getHours()).format('00')
+      + ':' + numeral(tmpDate.getMinutes()).format('00')
+      + ':' + numeral(tmpDate.getSeconds()).format('00'))
+
+    let stylesheet = ''
+    let links = this.css
+
+    if(links.length > 0) {
+      /* TODO
+      let order = []
+      links.forEach((data, index) => {
+        order.push(data[0])
+      })
+
+      order.sort((a, b) => a - b)
+      */
+      
+      // links = run_replace('html_process_css_files', $links);
+
+      links.forEach((link) => {
+        if(link[1].trim().length > 0) {
+          link[1] = link[1].replace(/\.css(['"]?>)$/i, '.css?ver=' + cssVer + '$1')
+
+          stylesheet += '\n' + link[1]
+        }
+      })
+    }
+
+    let javascript = ''
+    let scripts = this.js
+
+    if(scripts.length > 0) {
+      /* TODO
+      let order = []
+      links.forEach((data, index) => {
+        order.push(data[0])
+      })
+
+      order.sort((a, b) => a - b)
+      */
+      
+      // links = run_replace('html_process_css_files', $links);
+
+      scripts.forEach((js) => {
+        if(js[1].trim().length > 0) {
+          js[1] = js[1].replace(/\.js(['"]?>)$/i, '.js?ver=' + jsVer + '$1')
+
+          javascript += '\n' + js[1]
+        }
+      })
+    }
+
+    let returnData = {}
+
+    /*
+    </title>
+    <link rel="stylesheet" href="default.css">
+    밑으로 스킨의 스타일시트가 위치하도록 하게 한다.
+    */
+    headSubData.css = stylesheet
+
+    /*
+    </head>
+    <body>
+    전에 스킨의 자바스크립트가 위치하도록 하게 한다.
+    */
+    headSubData.js = javascript
   }
 }
 
@@ -223,6 +325,12 @@ exports.getText = function getText(str, html = 0, restore = false) {
 // &nbsp; &amp; &middot; 등을 정상으로 출력
 exports.htmlSymbol = function htmlSymbol(str) {
   return str.replace(/\&([a-z0-9]{1,20}|\#[0-9]{0,3});/i, "&#038;\\1;")
+}
+
+// Line 2452
+// HTML 마지막 처리
+exports.htmlEnd = async function htmlEnd(htmlProcess, g5, member, config, ip, datetime, serverTime, cssVer) {
+  await htmlProcess.run(g5, member, config, ip, datetime, serverTime, cssVer)
 }
 
 // Line 2460
