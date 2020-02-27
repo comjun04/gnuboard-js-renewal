@@ -29,7 +29,7 @@ module.exports = async function headRun(req, res, data = {}) {
   }
 
   // Line 41
-  returnData.connect = await connectLib.connect(data.common.g5, data.common.config)
+  returnData.connect = await connectLib.connect(data.common.g5, data.common.config, req.userData)
 
   returnData._status = 'OK'
   return returnData
